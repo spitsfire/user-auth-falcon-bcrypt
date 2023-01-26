@@ -4,10 +4,7 @@ from .helpers import load_template
 
 class DashboardResource:
   def on_get(self,req,res):
-    try:
-      cookies = req.cookies
-      session = cookies['session']
-    except:
+    if "session" not in req.cookies:
       raise falcon.HTTPMovedPermanently('/signup')
     
     template = load_template('dashboard.html')

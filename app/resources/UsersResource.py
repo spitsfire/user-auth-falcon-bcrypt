@@ -12,8 +12,8 @@ class UsersResource:
     try:
       result = User.objects.get(email=form["email"])
       if bcrypt.checkpw(form['password'], result.password):
-        res.set_cookie('session', resul.email)
-        raise falcon.HTTPMovedPermanently('/login')
+        res.set_cookie('session', result.email)
+        raise falcon.HTTPMovedPermanently('/dashboard')
     except:
       raise falcon.HTTPMovedPermanently('/login')
 
@@ -22,6 +22,7 @@ class UsersResource:
     pass_bytes = form['password'].encode('utf-8')
     salt = bcrypt.gensalt(10)
     hashed = bcrypt.hashpw(pass_bytes, salt)
+    print(hashed)
 
     new_user = User(uuid=str(uuid.uuid4()),email=form['email'],password=hashed)
     new_user.save()
